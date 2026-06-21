@@ -23,8 +23,9 @@ src/
   lib/
     renderBracket.js     # shared Amatic SC bracket renderer
     normalizePptx.js     # makes .pptx output byte-reproducible
+    normalize_pdf.py     # makes .pdf output byte-reproducible
 assets/                  # bundled font (+ generated bracket cache)
-output/                  # generated .pptx files (committed)
+output/                  # generated .pptx + .pdf files (committed)
 run.sh                   # WSL build/run helper
 ```
 
@@ -34,7 +35,12 @@ Each card generator lives in `src/cards/<card-name>/<card-name>.js`.
 
 - **Node.js** (for the generator scripts)
 - **Python 3 + Pillow** — used by `src/lib/renderBracket.js` to render the curly
-  bracket in the Amatic SC font (`pip install Pillow`)
+  bracket in the Amatic SC font
+- **LibreOffice** — converts each `.pptx` to `.pdf` (optional; PDF export is
+  skipped if it isn't installed)
+- **Carlito font** (`fonts-crosextra-carlito`) — a metric-compatible Calibri
+  substitute, so the PDF matches the PowerPoint layout
+- **pikepdf** (Python) — normalizes the PDF so it's reproducible
 
 The Amatic SC font (`assets/AmaticSC-Regular.ttf`) is included in the repo.
 
@@ -49,8 +55,8 @@ accessed through WSL, use the helper script:
 ./run.sh card-a card-b   # generate a specific subset
 ```
 
-The `.pptx` files are written to `output/` and are committed to the repo (see
-[Output files](#output-files)).
+The `.pptx` and `.pdf` files are written to `output/` and are committed to the
+repo (see [Output files](#output-files)).
 
 ### Why a helper script?
 
@@ -68,9 +74,11 @@ Two WSL gotchas make running directly painful:
 One-time setup it relies on:
 
 ```bash
-sudo apt-get install -y npm python3-pil   # Linux npm + Pillow
+sudo apt-get install -y npm python3-pil \
+  libreoffice-impress fonts-crosextra-carlito python3-pikepdf
 ```
 
+(`npm` + Pillow are required; the rest enable reproducible PDF export.)
 `run.sh` installs the npm dependencies itself on first run (and re-installs
 only when `package.json` changes).
 
@@ -92,18 +100,25 @@ npm run papa-honohono
   `src/lib/renderBracket.js` (via Python/Pillow) and cached to `assets/bracket.b64`.
   This cache is regenerated on every run and is gitignored.
 - The slides are assembled with [`pptxgenjs`](https://gitbrent.github.io/PptxGenJS/).
+- Each `.pptx` is then rendered to `.pdf` with headless LibreOffice — handy for
+  a quick preview (e.g. in Google Drive) without PowerPoint.
 
 ## Output files
 
-The generated `output/*.pptx` files **are committed** — they're how the lanyards
-are published for now, and committing them means a git diff shows whenever a
-card's shape changes.
+The generated `output/*.pptx` and `output/*.pdf` files **are committed** —
+they're how the lanyards are published for now, and committing them means a git
+diff shows whenever a card's shape changes.
 
-To keep those diffs meaningful, `src/lib/normalizePptx.js` rewrites each `.pptx`
-with fixed timestamps after generation, so re-running a card with no design
-changes produces a byte-identical file (no spurious diffs). Regenerating on the
-same machine is reproducible; output may differ across machines/dependency
-versions.
+To keep those diffs meaningful, both formats are normalized to be
+byte-reproducible after generation, so re-running a card with no design change
+produces an identical file (no spurious diffs):
+
+- `src/lib/normalizePptx.js` gives every zip entry a fixed timestamp.
+- `src/lib/normalize_pdf.py` (pikepdf) sets a fixed PDF date, drops
+  LibreOffice's per-export checksum, and regenerates a content-derived `/ID`.
+
+Regenerating on the same machine is reproducible; output may differ across
+machines or dependency versions.
 
 The cached bracket image (`assets/bracket.b64`) is regenerated on every run and
 is **not** committed.

@@ -41,7 +41,9 @@ async function normalizePptx(file) {
       );
     }
 
-    out.file(name, content, { date: FIXED_DATE });
+    // createFolders:false stops JSZip from auto-adding directory entries with
+    // the current time (which would reintroduce non-determinism).
+    out.file(name, content, { date: FIXED_DATE, createFolders: false });
   }
 
   const result = await out.generateAsync({ type: "nodebuffer", compression: "STORE" });

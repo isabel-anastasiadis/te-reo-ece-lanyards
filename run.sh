@@ -71,12 +71,28 @@ for CARD in "${CARDS[@]}"; do
   "$NODE" "$SCRIPT_REL"
 done
 
+# Convert each .pptx to a reproducible .pdf (for quick viewing / Drive preview).
+# Skipped with a warning if LibreOffice isn't installed.
+if command -v soffice >/dev/null 2>&1; then
+  echo
+  echo "Converting to PDF..."
+  for pptx in "$BUILD"/output/*.pptx; do
+    soffice --headless -env:UserInstallation="file://$BUILD/.lo_profile" \
+      --convert-to pdf --outdir "$BUILD/output" "$pptx" >/dev/null 2>&1
+  done
+  # Normalize PDFs so committed copies only change when the design does.
+  python3 "$BUILD/src/lib/normalize_pdf.py" "$BUILD"/output/*.pdf >/dev/null
+else
+  echo "Note: LibreOffice (soffice) not found — skipping PDF export." >&2
+fi
+
 # Copy the finished files back into the repo.
 mkdir -p "$REPO/output"
 cp -p "$BUILD"/output/*.pptx "$REPO/output/" 2>/dev/null || true
+cp -p "$BUILD"/output/*.pdf  "$REPO/output/" 2>/dev/null || true
 
 echo
 echo "Output in $REPO/output/:"
-ls -la "$REPO"/output/*.pptx
+ls -la "$REPO"/output/*.pptx "$REPO"/output/*.pdf 2>/dev/null
 
 exit $failed
