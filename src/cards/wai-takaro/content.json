@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "name": "Wai tākaro",
+    "nameEnglish": "Water Play",
+    "slug": "wai-takaro",
+    "colour": {
+      "dark":  "085041",
+      "mid":   "1D9E75",
+      "light": "5DCAA5",
+      "bg":    "E1F5EE"
+    },
+    "icon": "TbDroplet",
+    "attribution": null
+  },
+
+  "beginner": {
+    "sectionLabel": null,
+    "equation": {
+      "stem":        "Kei te ... te wai",
+      "stemEnglish": "The water is ...",
+      "options": [
+        { "maori": "rere",       "english": "flowing"      },
+        { "maori": "māhana",     "english": "warm"         },
+        { "maori": "makariri",   "english": "cold"         },
+        { "maori": "paratī ake", "english": "splashing up" }
+      ]
+    },
+    "celebration": { "maori": "Koia kei a koe!", "english": "You got it!" }
+  },
+
+  "insideLeft": {
+    "nouns": [
+      { "maori": "kōrere", "english": "pipe / funnel / channel", "starred": false },
+      { "maori": "kapu",   "english": "cup",                     "starred": false },
+      { "maori": "ipu",    "english": "container / vessel",      "starred": false }
+    ],
+    "equation": {
+      "stem":          "Kei te rere te wai...",
+      "stemEnglish":   "The water is flowing...",
+      "highlightWord": "rere",
+      "options": [
+        { "number": 1, "maori": "i",   "english": "in / along / at" },
+        { "number": 2, "maori": "mai", "english": "from"            },
+        { "number": 3, "maori": "ki",  "english": "to"              }
+      ],
+      "footer": { "maori": "...te kōrere", "english": "...the pipe" }
+    }
+  },
+
+  "insideRight": {
+    "verbs": [
+      { "maori": "ringi(hia)",      "english": "pour",              "starred": false, "example": "Kei te ringihia te wai" },
+      { "maori": "whakakī(ia)",     "english": "fill",              "starred": false, "example": "Kei te whakakīia te kapu (ki te wai)" },
+      { "maori": "whakapiako(tia)", "english": "empty out",         "starred": false, "example": "Kei te whakapiakotia te kapu" },
+      { "maori": "pōrutu",          "english": "splash with hands", "starred": false, "example": "Kei te pōrutu koe i te wai" },
+      { "maori": "tōrena",          "english": "overflow",          "starred": false, "example": "Kei te tōrena te wai o te kapu" }
+    ],
+    "describingWords": [
+      { "maori": "kī",    "english": "full",  "starred": false },
+      { "maori": "piako", "english": "empty", "starred": false },
+      { "maori": "mākū",  "english": "wet",   "starred": false }
+    ]
+  }
+}
