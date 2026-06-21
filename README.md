@@ -22,8 +22,9 @@ src/
       papa-honohono.js   # one generator per area of play
   lib/
     renderBracket.js     # shared Amatic SC bracket renderer
+    normalizePptx.js     # makes .pptx output byte-reproducible
 assets/                  # bundled font (+ generated bracket cache)
-output/                  # generated .pptx files
+output/                  # generated .pptx files (committed)
 run.sh                   # WSL build/run helper
 ```
 
@@ -43,11 +44,13 @@ If you're on Windows and this repo lives on a Windows drive (`/mnt/c/...`)
 accessed through WSL, use the helper script:
 
 ```bash
-./run.sh                 # generates the papa-honohono card (default)
-./run.sh <card-name>     # generates src/cards/<card-name>/<card-name>.js
+./run.sh                 # generate ALL cards (default)
+./run.sh papa-honohono   # generate one card
+./run.sh card-a card-b   # generate a specific subset
 ```
 
-The `.pptx` is written to `output/`.
+The `.pptx` files are written to `output/` and are committed to the repo (see
+[Output files](#output-files)).
 
 ### Why a helper script?
 
@@ -90,8 +93,20 @@ npm run papa-honohono
   This cache is regenerated on every run and is gitignored.
 - The slides are assembled with [`pptxgenjs`](https://gitbrent.github.io/PptxGenJS/).
 
-Generated output (`output/*.pptx`) and the cached bracket (`assets/bracket.b64`)
-are not committed.
+## Output files
+
+The generated `output/*.pptx` files **are committed** — they're how the lanyards
+are published for now, and committing them means a git diff shows whenever a
+card's shape changes.
+
+To keep those diffs meaningful, `src/lib/normalizePptx.js` rewrites each `.pptx`
+with fixed timestamps after generation, so re-running a card with no design
+changes produces a byte-identical file (no spurious diffs). Regenerating on the
+same machine is reproducible; output may differ across machines/dependency
+versions.
+
+The cached bracket image (`assets/bracket.b64`) is regenerated on every run and
+is **not** committed.
 
 ## Attribution
 

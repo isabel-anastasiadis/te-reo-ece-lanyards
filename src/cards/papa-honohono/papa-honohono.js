@@ -6,6 +6,7 @@ const fs = require("fs");
 const path = require("path");
 const { TbPuzzle } = require("react-icons/tb");
 const { renderBracket } = require("../../lib/renderBracket");
+const { normalizePptx } = require("../../lib/normalizePptx");
 
 // Repo root, resolved from this file's location (src/cards/<name>/<name>.js).
 // Keeps asset/output paths correct no matter what directory we run from.
@@ -331,6 +332,7 @@ async function main() {
   const outFile = path.join(ROOT, "output", "papa-honohono-lanyard.pptx");
   fs.mkdirSync(path.dirname(outFile), { recursive: true });
   await pres.writeFile({ fileName: outFile });
+  await normalizePptx(outFile); // make output byte-reproducible for committing
   console.log("Done! -> output/papa-honohono-lanyard.pptx");
 }
 

@@ -1,6 +1,7 @@
 node_modules/
-output/*
-!output/.gitkeep
+
+# Generated .pptx files in output/ ARE committed (published from the repo,
+# and diffs show when a card's shape changes).
 
 # Generated bracket image (regenerated on every run by renderBracket)
 assets/bracket.b64
