@@ -3,8 +3,13 @@ const React = require("react");
 const ReactDOMServer = require("react-dom/server");
 const sharp = require("sharp");
 const fs = require("fs");
+const path = require("path");
 const { TbPuzzle } = require("react-icons/tb");
-const { renderBracket } = require("./lib/renderBracket");
+const { renderBracket } = require("../../lib/renderBracket");
+
+// Repo root, resolved from this file's location (src/cards/<name>/<name>.js).
+// Keeps asset/output paths correct no matter what directory we run from.
+const ROOT = path.resolve(__dirname, "../../..");
 
 // ─────────────────────────────────────────────
 // Icon helpers
@@ -49,7 +54,7 @@ async function main() {
   // Generate the Amatic SC bracket fresh, then cache it to assets/bracket.b64.
   // The cached file is gitignored — regenerated on every run for repeatability.
   const bracketData = renderBracket("#" + AMBER_MID);
-  fs.writeFileSync("./assets/bracket.b64", bracketData);
+  fs.writeFileSync(path.join(ROOT, "assets", "bracket.b64"), bracketData);
 
   const contentW = PW - 2 * M;
 
@@ -323,7 +328,9 @@ async function main() {
     { text: "Ki te Hoe: Indigenising Practice (Williams & Te Rongopatahi, 2023, Ako Aotearoa) — Papa Honohono", options: { fontSize: 8, color: GRAY } }
   ], { x: PW + M, y: footerY + 0.04, w: contentW, h: 0.44, margin: 0, valign: "top" });
 
-  await pres.writeFile({ fileName: "./output/papa-honohono-lanyard.pptx" });
+  const outFile = path.join(ROOT, "output", "papa-honohono-lanyard.pptx");
+  fs.mkdirSync(path.dirname(outFile), { recursive: true });
+  await pres.writeFile({ fileName: outFile });
   console.log("Done! -> output/papa-honohono-lanyard.pptx");
 }
 

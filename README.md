@@ -9,14 +9,30 @@ kupu (vocabulary) and kīanga (phrases) for that area of play.
 
 ## Lanyards
 
-| Area of play   | Script              | Output                                |
-| -------------- | ------------------- | ------------------------------------- |
-| Papa Honohono (Puzzles) | `papa-honohono.js` | `output/papa-honohono-lanyard.pptx` |
+| Area of play            | Card name       | Output                              |
+| ----------------------- | --------------- | ----------------------------------- |
+| Papa Honohono (Puzzles) | `papa-honohono` | `output/papa-honohono-lanyard.pptx` |
+
+## Project structure
+
+```
+src/
+  cards/
+    papa-honohono/
+      papa-honohono.js   # one generator per area of play
+  lib/
+    renderBracket.js     # shared Amatic SC bracket renderer
+assets/                  # bundled font (+ generated bracket cache)
+output/                  # generated .pptx files
+run.sh                   # WSL build/run helper
+```
+
+Each card generator lives in `src/cards/<card-name>/<card-name>.js`.
 
 ## Requirements
 
 - **Node.js** (for the generator scripts)
-- **Python 3 + Pillow** — used by `lib/renderBracket.js` to render the curly
+- **Python 3 + Pillow** — used by `src/lib/renderBracket.js` to render the curly
   bracket in the Amatic SC font (`pip install Pillow`)
 
 The Amatic SC font (`assets/AmaticSC-Regular.ttf`) is included in the repo.
@@ -27,8 +43,8 @@ If you're on Windows and this repo lives on a Windows drive (`/mnt/c/...`)
 accessed through WSL, use the helper script:
 
 ```bash
-./run.sh                 # generates papa-honohono.js
-./run.sh some-other.js   # generates a different script
+./run.sh                 # generates the papa-honohono card (default)
+./run.sh <card-name>     # generates src/cards/<card-name>/<card-name>.js
 ```
 
 The `.pptx` is written to `output/`.
@@ -70,7 +86,7 @@ npm run papa-honohono
 - Icons are pulled from [`react-icons`](https://react-icons.github.io/react-icons/),
   rendered to SVG and converted to PNG with [`sharp`](https://sharp.pixelplumbing.com/).
 - The decorative `{` bracket is rendered from the Amatic SC font by
-  `lib/renderBracket.js` (via Python/Pillow) and cached to `assets/bracket.b64`.
+  `src/lib/renderBracket.js` (via Python/Pillow) and cached to `assets/bracket.b64`.
   This cache is regenerated on every run and is gitignored.
 - The slides are assembled with [`pptxgenjs`](https://gitbrent.github.io/PptxGenJS/).
 

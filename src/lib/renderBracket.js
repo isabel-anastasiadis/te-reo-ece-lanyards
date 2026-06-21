@@ -8,8 +8,8 @@
  *   - Python 3 with Pillow installed (pip install Pillow)
  *   - assets/AmaticSC-Regular.ttf
  *
- * Usage:
- *   const { renderBracket } = require('../lib/renderBracket');
+ * Usage (from a card script at src/cards/<name>/<name>.js):
+ *   const { renderBracket } = require('../../lib/renderBracket');
  *   const bracketData = renderBracket('#BA7517'); // amber
  *   const bracketData = renderBracket('#1D9E75'); // teal
  */
@@ -19,7 +19,7 @@ const fs   = require("fs");
 const os   = require("os");
 const path = require("path");
 
-const FONT_PATH = path.resolve(__dirname, "../assets/AmaticSC-Regular.ttf");
+const FONT_PATH = path.resolve(__dirname, "../../assets/AmaticSC-Regular.ttf");
 
 /**
  * Render a { bracket in the given hex colour.

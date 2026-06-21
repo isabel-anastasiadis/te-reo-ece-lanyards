@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# run.sh — generate a lanyard from this repo under WSL.
+# run.sh — generate a lanyard card from this repo under WSL.
 #
 # Why this exists: npm installs native modules (sharp) into node_modules, and
 # writing those many small files onto a Windows-mounted drive (/mnt/c/...)
@@ -9,35 +9,35 @@
 # finished .pptx back into this repo's output/ folder.
 #
 # Usage:
-#   ./run.sh                    # runs papa-honohono.js (default)
-#   ./run.sh some-other.js      # runs a different generator script
+#   ./run.sh                 # generates the papa-honohono card (default)
+#   ./run.sh <card-name>     # generates src/cards/<card-name>/<card-name>.js
 #
 set -euo pipefail
 
-SCRIPT="${1:-papa-honohono.js}"
+CARD="${1:-papa-honohono}"
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BUILD="${TE_REO_BUILD_DIR:-$HOME/.te-reo-build}"
+SCRIPT_REL="src/cards/$CARD/$CARD.js"
 
 # Prefer the Linux node/npm over any Windows ones that may be on PATH.
 NODE=node; [ -x /usr/bin/node ] && NODE=/usr/bin/node
 NPM=npm;   [ -x /usr/bin/npm ]  && NPM=/usr/bin/npm
 
-if [ ! -f "$REPO/$SCRIPT" ]; then
-  echo "Error: generator script not found: $REPO/$SCRIPT" >&2
+if [ ! -f "$REPO/$SCRIPT_REL" ]; then
+  echo "Error: card generator not found: $SCRIPT_REL" >&2
+  echo "Available cards:" >&2
+  ls "$REPO/src/cards" 2>/dev/null | sed 's/^/  /' >&2 || true
   exit 1
 fi
 
 echo "Repo:   $REPO"
 echo "Build:  $BUILD"
-echo "Script: $SCRIPT"
+echo "Card:   $CARD"
 echo
 
 # Sync source into the native build dir (never node_modules or output).
-mkdir -p "$BUILD/lib" "$BUILD/assets" "$BUILD/output"
-cp -p "$REPO"/*.js           "$BUILD/"          2>/dev/null || true
-cp -p "$REPO"/package.json   "$BUILD/"
-cp -p "$REPO"/lib/*.js       "$BUILD/lib/"      2>/dev/null || true
-cp -p "$REPO"/assets/*.ttf   "$BUILD/assets/"   2>/dev/null || true
+mkdir -p "$BUILD/output"
+cp -rp "$REPO/src" "$REPO/package.json" "$REPO/assets" "$BUILD/"
 
 # Install dependencies only when missing or when package.json has changed
 # (cp -p above preserves mtimes, so -nt is meaningful).
@@ -52,7 +52,7 @@ fi
 echo
 
 # Generate.
-"$NODE" "$SCRIPT"
+"$NODE" "$SCRIPT_REL"
 
 # Copy the finished file(s) back into the repo.
 mkdir -p "$REPO/output"

@@ -4,7 +4,7 @@
   "description": "Generate te reo Māori lanyard templates for areas of play at early childhood education centres.",
   "license": "GPL-3.0-or-later",
   "scripts": {
-    "papa-honohono": "node papa-honohono.js"
+    "papa-honohono": "node src/cards/papa-honohono/papa-honohono.js"
   },
   "dependencies": {
     "pptxgenjs": "^3.12.0",
