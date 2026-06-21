@@ -1,0 +1,9 @@
+node_modules/
+output/*
+!output/.gitkeep
+
+# Generated bracket image (regenerated on every run by renderBracket)
+assets/bracket.b64
+
+*.log
+.DS_Store
