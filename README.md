@@ -19,22 +19,51 @@ kupu (vocabulary) and kīanga (phrases) for that area of play.
 - **Python 3 + Pillow** — used by `lib/renderBracket.js` to render the curly
   bracket in the Amatic SC font (`pip install Pillow`)
 
-## Setup
-
-```bash
-npm install
-pip install Pillow
-```
-
 The Amatic SC font (`assets/AmaticSC-Regular.ttf`) is included in the repo.
 
-## Usage
+## Running under WSL (recommended)
+
+If you're on Windows and this repo lives on a Windows drive (`/mnt/c/...`)
+accessed through WSL, use the helper script:
 
 ```bash
-npm run papa-honohono
+./run.sh                 # generates papa-honohono.js
+./run.sh some-other.js   # generates a different script
 ```
 
 The `.pptx` is written to `output/`.
+
+### Why a helper script?
+
+Two WSL gotchas make running directly painful:
+
+1. **npm corrupts native modules on `/mnt/c`.** Installing `node_modules`
+   (which includes the native `sharp` module) onto a Windows-mounted drive
+   corrupts files. `run.sh` keeps `node_modules` on the native Linux
+   filesystem (`~/.te-reo-build`), runs the generator there, and copies the
+   finished `.pptx` back into `output/`.
+2. **Mixed Windows/Linux toolchains on PATH.** `run.sh` explicitly prefers the
+   Linux `node`/`npm` (`/usr/bin/...`) so the bracket renderer reaches the
+   Linux Python/Pillow rather than the Windows Python stub.
+
+One-time setup it relies on:
+
+```bash
+sudo apt-get install -y npm python3-pil   # Linux npm + Pillow
+```
+
+`run.sh` installs the npm dependencies itself on first run (and re-installs
+only when `package.json` changes).
+
+## Running elsewhere (macOS / Linux / native Windows)
+
+No `/mnt/c` issue applies, so you can run directly:
+
+```bash
+npm install
+# Pillow: pip install Pillow   (or your OS package, e.g. apt install python3-pil)
+npm run papa-honohono
+```
 
 ## How it works
 
