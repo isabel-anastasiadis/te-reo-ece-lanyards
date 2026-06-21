@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "name": "Papa honohono",
+    "nameEnglish": "Puzzles",
+    "slug": "papa-honohono",
+    "colour": {
+      "dark":  "633806",
+      "mid":   "BA7517",
+      "light": "EF9F27",
+      "bg":    "FAEEDA"
+    },
+    "icon": "TbPuzzle",
+    "attribution": "Ki te Hoe: Indigenising Practice (Williams & Te Rongopatahi, 2023, Ako Aotearoa)"
+  },
+
+  "beginner": {
+    "sectionLabel": "GIVING INSTRUCTIONS",
+    "equation": {
+      "left": [
+        { "maori": "hurihia",     "english": "turn it"   },
+        { "maori": "nekenekehia", "english": "wiggle it" }
+      ],
+      "noun": { "maori": "te piriri", "english": "the piece" }
+    },
+    "celebration": { "maori": "Koia kei a koe!", "english": "You got it!" }
+  },
+
+  "insideLeft": {
+    "nouns": [
+      { "maori": "papa honohono", "english": "puzzle", "starred": true  },
+      { "maori": "piriri",        "english": "piece",  "starred": true  },
+      { "maori": "āhua",          "english": "shape",  "starred": true  },
+      { "maori": "tapa",          "english": "edge",   "starred": false },
+      { "maori": "kokonga",       "english": "corner", "starred": false }
+    ],
+    "verbs": [
+      { "maori": "rapu(a)",       "english": "search",                     "starred": false },
+      { "maori": "huri(hia)",     "english": "turn it",                    "starred": true  },
+      { "maori": "hurirapa(tia)", "english": "turn upside down, over, up", "starred": true  },
+      { "maori": "nekeneke(hia)", "english": "wiggle / jiggle",            "starred": false },
+      { "maori": "whakanō(hia)",  "english": "place it",                   "starred": true  }
+    ]
+  },
+
+  "insideRight": {
+    "phrases": [
+      { "maori": "Rapua ngā kokonga.", "english": "Find the corners.",           "starred": false },
+      { "maori": "Kua kitea!",         "english": "Found it!",                   "starred": false },
+      { "maori": "Paku hurihia anō.",  "english": "Turn it just a little more.", "starred": false },
+      { "maori": "Karawhiua!",         "english": "Give it a go!",               "starred": false },
+      { "maori": "Koia kei a koe!",    "english": "You got it!",                 "starred": true  }
+    ]
+  }
+}
