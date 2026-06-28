@@ -6,8 +6,8 @@ _Last updated: 2026-06-28_
 
 ## Current state — new HTML→PDF pipeline is live
 
-Both cards (**Tākaro wai**, **Papa honohono**) now build through one pipeline,
-on branch `html-pdf-redesign`:
+Both cards (**Tākaro wai**, **Papa honohono**) now build through one pipeline
+(merged to `main` 2026-06-28):
 
 ```
 content.json  --(node composer)-->  <card>.html  --(WeasyPrint)-->  PDF
@@ -49,7 +49,11 @@ content.json  --(node composer)-->  <card>.html  --(WeasyPrint)-->  PDF
 3. **Papa inside-left asymmetry** — its kupu lists are de-boxed (to free the
    velcro band) while the phrases keep their box. Confirm that's fine or
    de-box the phrases too.
-4. **Merge** `html-pdf-redesign` to `main` once happy; decide whether to keep
-   the branch's history or squash.
+4. **Rewrite `README.md`** — it still documents the retired
+   pptxgenjs / PowerPoint / LibreOffice pipeline (`npm install`, `sharp`,
+   `react-icons`, `.pptx` output, the `~/.te-reo-build` dance). Rewrite it for
+   the HTML→PDF pipeline: `./run.sh`, `content.json` as the edit surface,
+   WeasyPrint + Carlito, no npm/node_modules, PDFs as build output. Point to
+   `DESIGN.md` for the design system.
 5. **New cards** — add `src/cards/<slug>/{content.json, <slug>.js}` reusing
    cardKit; add an icon path to `ICONS` in `cardKit.js` if needed.
