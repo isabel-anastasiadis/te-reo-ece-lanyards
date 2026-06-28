@@ -1,10 +1,12 @@
 node_modules/
 
-# Generated .pptx files in output/ ARE committed (published from the repo,
-# and diffs show when a card's shape changes).
+# The composer output src/cards/<card>/<card>.html IS committed (deterministic).
+# The rendered PDFs are a regenerable build output — not committed, because
+# WeasyPrint randomises font-subset tags so they aren't byte-stable.
+output/*.pdf
 
-# Generated bracket image (regenerated on every run by renderBracket)
-assets/bracket.b64
+# Cached bracket images (regenerated on demand by renderBracket)
+assets/bracket-*.b64
 
 *.log
 .DS_Store

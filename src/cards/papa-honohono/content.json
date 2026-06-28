@@ -3,18 +3,14 @@
     "name": "Papa honohono",
     "nameEnglish": "Puzzles",
     "slug": "papa-honohono",
-    "colour": {
-      "dark":  "633806",
-      "mid":   "BA7517",
-      "light": "EF9F27",
-      "bg":    "FAEEDA"
-    },
-    "icon": "TbPuzzle",
+    "icon": "puzzle",
+    "colour": { "ink": "633806", "mid": "BA7517", "light": "EF9F27", "box": "FAEEDA", "note": "6E5A33" },
+    "layout": { "celebrateGap": "22mm", "velcroTop": "68mm" },
     "attribution": "Ki te Hoe: Indigenising Practice (Williams & Te Rongopatahi, 2023, Ako Aotearoa)"
   },
 
   "beginner": {
-    "sectionLabel": "GIVING INSTRUCTIONS",
+    "sectionLabel": "Giving instructions",
     "equation": {
       "left": [
         { "maori": "hurihia",     "english": "turn it"   },
@@ -34,11 +30,11 @@
       { "maori": "kokonga",       "english": "corner", "starred": false }
     ],
     "verbs": [
-      { "maori": "rapu(a)",       "english": "search",                     "starred": false },
-      { "maori": "huri(hia)",     "english": "turn it",                    "starred": true  },
-      { "maori": "hurirapa(tia)", "english": "turn upside down, over, up", "starred": true  },
-      { "maori": "nekeneke(hia)", "english": "wiggle / jiggle",            "starred": false },
-      { "maori": "whakanō(hia)",  "english": "place it",                   "starred": true  }
+      { "maori": "rapu(a)",       "english": "search",         "starred": false },
+      { "maori": "huri(hia)",     "english": "turn it",        "starred": true  },
+      { "maori": "hurirapa(tia)", "english": "turn over/up",   "starred": true  },
+      { "maori": "nekeneke(hia)", "english": "wiggle / jiggle","starred": false },
+      { "maori": "whakanō(hia)",  "english": "place it",       "starred": true  }
     ]
   },
 

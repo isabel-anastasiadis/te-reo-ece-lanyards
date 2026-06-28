@@ -1,156 +1,162 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><style>
-  @page { size: 210mm 148mm; margin: 0; }
-  :root { --ink:#633806; --mid:#BA7517; --light:#EF9F27; --box:#FAEEDA; --note:#6E5A33; }
-  * { box-sizing: border-box; }
-  html, body { margin:0; padding:0; font-family:'Carlito','Calibri',sans-serif; color:var(--ink); }
+@page { size: 210mm 148mm; margin: 0; }
+:root{--ink:#633806;--mid:#BA7517;--light:#EF9F27;--box:#FAEEDA;--note:#6E5A33;--celebrate-gap:22mm;--velcro-top:68mm}
+/* Shared lanyard-card styles.
+   Palette + per-card tunables are injected as :root vars by the composer
+   (src/lib/cardKit.js); everything below derives from them. */
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; font-family:'Carlito','Calibri',sans-serif; color:var(--ink); }
 
-  .sheet { width:210mm; height:148mm; font-size:0; white-space:nowrap; }
-  .sheet.first { page-break-after: always; }
-  .panel { display:inline-block; vertical-align:top; width:105mm; height:148mm; font-size:11pt; white-space:normal; }
-  .panel.left  { padding:2mm 0 2mm 2mm; }
-  .panel.right { padding:2mm 2mm 2mm 0; }
+/* two A6 panels per A5 sheet; printed double-sided, folded down the centre */
+.sheet { width:210mm; height:148mm; font-size:0; white-space:nowrap; }
+.sheet.first { page-break-after: always; }
+.panel { display:inline-block; vertical-align:top; width:105mm; height:148mm; font-size:11pt; white-space:normal; }
+.panel.left  { padding:2mm 0 2mm 2mm; }
+.panel.right { padding:2mm 2mm 2mm 0; }
 
-  .card { width:100%; height:100%; border:1.1mm solid var(--mid); padding:5mm; position:relative; }
-  .panel.left  .card { border-radius:4mm 0 0 4mm; }
-  .panel.right .card { border-radius:0 4mm 4mm 0; }
+.card { width:100%; height:100%; border:1.1mm solid var(--mid); padding:5mm; position:relative; }
+.panel.left  .card { border-radius:4mm 0 0 4mm; }
+.panel.right .card { border-radius:0 4mm 4mm 0; }
 
-  /* header */
-  .chead { display:table; width:100%; }
-  .chead .ic { display:table-cell; width:9mm; vertical-align:middle; }
-  .chead .ic svg { width:7.5mm; height:7.5mm; }
-  .chead .t { display:table-cell; vertical-align:middle; }
-  .chead .t b { font-size:15pt; color:var(--ink); display:block; line-height:1.05; white-space:nowrap; }
-  .chead .t span { font-size:11pt; color:var(--mid); }
-  .cdiv { border-top:0.3mm solid var(--light); margin-top:3mm; }
-  /* bigger header for the back/beginner page */
-  .chead.big .ic { width:13mm; }
-  .chead.big .ic svg { width:10mm; height:10mm; }
-  .chead.big .t b { font-size:20pt; }
-  .chead.big .t span { font-size:13pt; }
+/* velcro-dot guide: inside spread only (holds the folded card shut) */
+.sheet:not(.first) .card::before { content:""; position:absolute; top:var(--velcro-top,70mm); width:15mm; height:15mm; border:0.4mm dashed var(--mid); border-radius:50%; opacity:0.5; z-index:5; }
+.sheet:not(.first) .panel.left  .card::before { left:1mm; }
+.sheet:not(.first) .panel.right .card::before { right:1mm; }
 
-  /* velcro-dot guide: inside spread only, in the cleared mid band */
-  .sheet:not(.first) .card::before { content:""; position:absolute; top:68mm; width:15mm; height:15mm; border:0.4mm dashed var(--mid); border-radius:50%; opacity:0.5; z-index:5; }
-  .sheet:not(.first) .panel.left  .card::before { left:1mm; }
-  .sheet:not(.first) .panel.right .card::before { right:1mm; }
+/* header */
+.chead { display:table; width:100%; }
+.chead .ic { display:table-cell; width:9mm; vertical-align:middle; }
+.chead .ic svg { width:7.5mm; height:7.5mm; }
+.chead .t { display:table-cell; vertical-align:middle; }
+.chead .t b { font-size:15pt; color:var(--ink); display:block; line-height:1.05; white-space:nowrap; }
+.chead .t span { font-size:11pt; color:var(--mid); }
+.cdiv { border-top:0.3mm solid var(--light); margin-top:3mm; }
+/* bigger header for the back/beginner page (carries less; use the space) */
+.chead.big .ic { width:13mm; }
+.chead.big .ic svg { width:10mm; height:10mm; }
+.chead.big .t b { font-size:20pt; }
+.chead.big .t span { font-size:13pt; }
 
-  .seclabel { font-size:8.5pt; font-weight:700; letter-spacing:0.4mm; text-transform:uppercase; color:var(--mid); }
-  .star { color:var(--mid); font-size:0.8em; }
+.seclabel { font-size:8.5pt; font-weight:700; letter-spacing:0.4mm; text-transform:uppercase; color:var(--mid); }
+.star { color:var(--mid); font-size:0.8em; }
 
-  /* pale box */
-  .eq { background:var(--box); border-radius:3mm; padding:3.5mm 4mm; margin-top:3.5mm; }
-  .eq.beg { padding:7mm 5mm; }       /* beginner box — fuller so it fills the panel */
-  .eq.list { background:none; padding:0; margin-top:5mm; border-radius:0; }      /* kupu lists: no box, frees space for the velcro band */
-  .eq.list.foot { position:absolute; left:5mm; right:5mm; bottom:5mm; margin-top:0; }   /* 2nd list floated to bottom */
-  .eq .seclabel { margin-bottom:2.5mm; display:block; text-align:left; }
+/* pale content box + its modifiers */
+.eq { background:var(--box); border-radius:3mm; padding:3.5mm 4mm; margin-top:3.5mm; }
+.eq.beg { padding:7mm 5mm; }                                                   /* fuller beginner box */
+.eq.loc { position:absolute; left:5mm; right:5mm; bottom:18mm; margin-top:0; }  /* floated to clear velcro band */
+.eq.list { background:none; padding:0; margin-top:5mm; border-radius:0; }       /* de-boxed list (tight side) */
+.eq.list.foot { position:absolute; left:5mm; right:5mm; bottom:5mm; margin-top:0; }
+.eq .seclabel { margin-bottom:2.5mm; display:block; text-align:left; }
 
-  /* beginner build-a-phrase equation */
-  .bap { display:table; width:100%; }
-  .bap > div { display:table-cell; vertical-align:middle; }
-  .bap-verbs { text-align:right; padding-right:1mm; }
-  .vopt { margin:2.6mm 0; }
-  .vopt b { font-size:18pt; color:var(--ink); display:block; }
-  .vopt i { font-size:11pt; color:var(--mid); font-style:italic; }
-  .bap-brace { width:7mm; text-align:center; }
-  .bap-brace .brace-img { height:30mm; width:auto; vertical-align:middle; }
-  .bap-plus { width:8mm; text-align:center; font-size:22pt; font-weight:700; color:var(--mid); }
-  .bap-noun { text-align:left; padding-left:1mm; }
-  .bap-noun b { font-size:18pt; color:var(--ink); display:block; }
-  .bap-noun i { font-size:11pt; color:var(--mid); font-style:italic; }
+/* beginner: slot equation */
+.answerline { text-align:center; font-size:20pt; font-weight:700; }
+.slot { display:inline-block; min-width:12mm; padding:0 2.5mm; border:0.5mm dashed var(--mid); border-radius:2mm; color:var(--mid); font-weight:700; }
+.answersub { text-align:center; font-size:11.5pt; color:var(--mid); font-style:italic; margin-top:1.5mm; }
+.ublank { display:inline-block; min-width:11mm; border-bottom:0.4mm solid var(--mid); }
+.grid2 { margin-top:4mm; text-align:center; font-size:0; }
+.tile { display:inline-block; width:47%; vertical-align:top; margin:0 1% 2.8mm; background:#fff; border:0.3mm solid var(--mid); border-radius:2.2mm; padding:5.5mm 1mm; text-align:center; border-bottom:1.1mm solid var(--light); }
+.tile b { display:block; font-size:16.5pt; color:var(--ink); }
+.tile i { font-size:11pt; color:var(--mid); font-style:italic; }
 
-  .celebrate { text-align:center; margin-top:22mm; }
-  .celebrate b { font-size:20pt; color:var(--ink); }
-  .celebrate i { display:block; font-size:11pt; color:var(--mid); font-style:italic; }
+/* beginner: build-a-phrase equation */
+.bap { display:table; width:100%; }
+.bap > div { display:table-cell; vertical-align:middle; }
+.bap-verbs { text-align:right; padding-right:1mm; }
+.vopt { margin:2.6mm 0; }
+.vopt b { font-size:18pt; color:var(--ink); display:block; }
+.vopt i { font-size:11pt; color:var(--mid); font-style:italic; }
+.bap-brace { width:7mm; text-align:center; }
+.bap-brace .brace-img { height:30mm; width:auto; vertical-align:middle; }
+.bap-plus { width:8mm; text-align:center; font-size:22pt; font-weight:700; color:var(--mid); }
+.bap-noun { text-align:left; padding-left:1mm; }
+.bap-noun b { font-size:18pt; color:var(--ink); display:block; }
+.bap-noun i { font-size:11pt; color:var(--mid); font-style:italic; }
 
-  /* kupu rows */
-  .kupurow { display:table; width:100%; }
-  .kupurow .km { display:table-cell; text-align:left; font-size:13pt; font-weight:700; color:var(--ink); padding:1.4mm 0; border-bottom:0.25mm dotted var(--light); }
-  .kupurow .km .tail { font-weight:400; }
-  .kupurow .ke { display:table-cell; text-align:right; font-size:10.5pt; font-style:italic; color:var(--mid); padding:1.4mm 0; border-bottom:0.25mm dotted var(--light); vertical-align:bottom; }
-  .kupurow.last .km, .kupurow.last .ke { border-bottom:0; }
+/* celebration */
+.celebrate { text-align:center; margin-top:var(--celebrate-gap,18mm); }
+.celebrate b { font-size:21pt; color:var(--ink); }
+.celebrate i { display:block; font-size:11.5pt; color:var(--mid); font-style:italic; }
 
-  /* phrases */
-  .phrase { padding-left:3mm; border-left:0.8mm solid var(--light); margin-bottom:3mm; }
-  .phrase:last-child { margin-bottom:0; }
-  .phrase .pm { font-size:12.5pt; font-weight:700; color:var(--ink); }
-  .phrase .pe { font-size:10pt; font-style:italic; color:var(--mid); margin-top:0.3mm; }
+/* question heading */
+.ask { text-align:center; }
+.ask b { font-size:15pt; }
+.ask .sub { display:block; font-size:10pt; color:var(--mid); font-style:italic; font-weight:400; margin-top:0.8mm; }
+.ask .sub .ew { color:var(--mid); font-weight:700; }
+.target { color:var(--mid); font-weight:700; }
+.qchip { display:inline-block; border:0.45mm dashed var(--mid); border-radius:2mm; padding:0 1.8mm; color:var(--mid); font-weight:700; }
+.qadiv { border-top:0.3mm dashed var(--light); margin-top:2.6mm; }
 
-  /* footer */
-  .footer { position:absolute; left:5mm; right:5mm; bottom:5mm; border-top:0.3mm solid var(--light); padding-top:1.5mm; font-size:7.5pt; color:var(--note); line-height:1.3; }
-  .footer .star { font-size:8pt; }
+/* chips (3 across) */
+.chips { display:table; width:100%; margin-top:3mm; border-spacing:1.6mm 0; }
+.chip { display:table-cell; width:33%; background:#fff; border:0.3mm solid var(--mid); border-radius:2.2mm; padding:4mm 1mm; text-align:center; vertical-align:middle; border-bottom:1.1mm solid var(--light); }
+.chip b { display:block; font-size:13pt; color:var(--ink); }
+.chip i { font-size:9.5pt; color:var(--mid); font-style:italic; }
 
-  /* cover */
-  .card.cover { background:var(--mid); border-color:var(--mid); text-align:center; }
-  .covercell { text-align:center; }
-  .circle { width:27mm; height:27mm; border-radius:50%; background:rgba(255,255,255,0.18); border:0.4mm solid rgba(255,255,255,0.55); margin:36mm auto 0; padding:5.5mm; }
-  .circle svg { width:16mm; height:16mm; display:block; }
-  .ctitle { margin-top:7mm; font-size:28pt; font-weight:700; color:#fff; white-space:nowrap; }
-  .csub { margin-top:2.5mm; font-size:14pt; font-weight:700; color:#fff; letter-spacing:1mm; }
+/* example / location rows */
+.wline { display:table; width:100%; }
+.wline .mi { display:table-cell; text-align:left; font-size:13.5pt; padding:1.8mm 0; border-bottom:0.25mm dotted var(--light); }
+.wline .mi b { color:#000; }
+.wline .en { display:table-cell; text-align:right; font-size:10pt; color:var(--mid); font-style:italic; padding:1.8mm 0; border-bottom:0.25mm dotted var(--light); vertical-align:bottom; }
+.wline .en b { font-style:normal; }
+.wline.last .mi, .wline.last .en { border-bottom:0; }
+
+/* key kupu note */
+.kupu { position:absolute; left:5mm; right:5mm; bottom:5mm; }
+.kupu .lbl { font-size:8.5pt; font-weight:700; letter-spacing:0.4mm; text-transform:uppercase; color:var(--mid); }
+.kupu .krow { display:table; width:100%; margin-top:1mm; }
+.kupu .kl { display:table-cell; text-align:left; font-size:13.5pt; font-weight:700; color:var(--ink); }
+.kupu .kr { display:table-cell; text-align:right; font-size:10pt; color:var(--note); font-style:italic; vertical-align:bottom; }
+
+/* verb list (headword + gloss + example) */
+.vlist { margin-top:3mm; padding-top:3mm; border-top:0.3mm dashed var(--light); }
+.vrow { padding:2mm 0; border-bottom:0.25mm dotted var(--light); }
+.vrow.last { border-bottom:0; }
+.vh b { font-size:14pt; color:var(--ink); }
+.vh .tail { font-size:13pt; color:var(--ink); }
+.vh i { font-size:10pt; color:var(--note); font-style:italic; }
+.eg { font-size:10pt; color:var(--mid); font-style:italic; margin-top:0.8mm; }
+
+/* kupu rows (te reo + English, dotted) */
+.kupurow { display:table; width:100%; }
+.kupurow .km { display:table-cell; text-align:left; font-size:13pt; font-weight:700; color:var(--ink); padding:1.4mm 0; border-bottom:0.25mm dotted var(--light); }
+.kupurow .km .tail { font-weight:400; }
+.kupurow .ke { display:table-cell; text-align:right; font-size:10.5pt; font-style:italic; color:var(--mid); padding:1.4mm 0; border-bottom:0.25mm dotted var(--light); vertical-align:bottom; }
+.kupurow.last .km, .kupurow.last .ke { border-bottom:0; }
+
+/* phrases (accent bar + te reo + English) */
+.phrase { padding-left:3mm; border-left:0.8mm solid var(--light); margin-bottom:3mm; }
+.phrase:last-child { margin-bottom:0; }
+.phrase .pm { font-size:12.5pt; font-weight:700; color:var(--ink); }
+.phrase .pe { font-size:10pt; font-style:italic; color:var(--mid); margin-top:0.3mm; }
+
+/* attribution footer */
+.footer { position:absolute; left:5mm; right:5mm; bottom:5mm; border-top:0.3mm solid var(--light); padding-top:1.5mm; font-size:7.5pt; color:var(--note); line-height:1.3; }
+.footer .star { font-size:8pt; }
+
+/* cover */
+.card.cover { background:var(--mid); border-color:var(--mid); text-align:center; }
+.covercell { text-align:center; }
+.circle { width:27mm; height:27mm; border-radius:50%; background:rgba(255,255,255,0.18); border:0.4mm solid rgba(255,255,255,0.55); margin:36mm auto 0; padding:5.5mm; }
+.circle svg { width:16mm; height:16mm; display:block; }
+.ctitle { margin-top:7mm; font-size:var(--cover-title,28pt); font-weight:700; color:#fff; white-space:nowrap; }
+.csub { margin-top:2.5mm; font-size:var(--cover-sub,14pt); font-weight:700; color:#fff; letter-spacing:1mm; }
 </style></head><body>
-
-<!-- ============ PAGE 1 : beginner | cover ============ -->
 <div class="sheet first"><div class="panel left">
-  <div class="card">
-    <div class="chead big"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#BA7517" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1"/></svg></div><div class="t"><b>Papa honohono</b><span>Puzzles</span></div></div>
-    <div class="cdiv"></div>
-    <div class="eq beg">
-      <div class="seclabel">Giving instructions</div>
-      <div class="bap">
-        <div class="bap-verbs">
-          <div class="vopt"><b>hurihia</b><i>turn it</i></div>
-          <div class="vopt"><b>nekenekehia</b><i>wiggle it</i></div>
-        </div>
-        <div class="bap-brace"><img class="brace-img" src="data:image/png;base64,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"></div>
-        <div class="bap-plus">+</div>
-        <div class="bap-noun"><b>te piriri</b><i>the piece</i></div>
-      </div>
-    </div>
-    <div class="celebrate"><b>Koia kei a koe!</b><i>You got it!</i></div>
-  </div>
+<div class="card"><div class="chead big"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#BA7517" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1"/></svg></div><div class="t"><b>Papa honohono</b><span>Puzzles</span></div></div>
+<div class="cdiv"></div><div class="eq beg"><div class="seclabel">Giving instructions</div><div class="bap"><div class="bap-verbs"><div class="vopt"><b>hurihia</b><i>turn it</i></div><div class="vopt"><b>nekenekehia</b><i>wiggle it</i></div></div><div class="bap-brace"><img class="brace-img" src="data:image/png;base64,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"></div><div class="bap-plus">+</div><div class="bap-noun"><b>te piriri</b><i>the piece</i></div></div></div><div class="celebrate"><b>Koia kei a koe!</b><i>You got it!</i></div></div>
 </div><div class="panel right">
-  <div class="card cover"><div class="covercell">
-    <div class="circle"><svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1"/></svg></div>
-    <div class="ctitle">Papa honohono</div>
-    <div class="csub">PUZZLES</div>
-  </div></div>
+<div class="card cover"><div class="covercell">
+  <div class="circle"><svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1"/></svg></div>
+  <div class="ctitle">Papa honohono</div>
+  <div class="csub">PUZZLES</div>
 </div></div>
-
-<!-- ============ PAGE 2 : kupu (nouns + verbs) | phrases ============ -->
+</div></div>
 <div class="sheet"><div class="panel left">
-  <div class="card">
-    <div class="chead"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#BA7517" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1"/></svg></div><div class="t"><b>Papa honohono</b><span>Puzzles</span></div></div>
-    <div class="cdiv"></div>
-    <div class="eq list">
-      <div class="seclabel">Kupu — nouns</div>
-      <div class="kupurow"><span class="km">papa honohono <span class="star">★</span></span><span class="ke">puzzle</span></div>
-      <div class="kupurow"><span class="km">piriri <span class="star">★</span></span><span class="ke">piece</span></div>
-      <div class="kupurow"><span class="km">āhua <span class="star">★</span></span><span class="ke">shape</span></div>
-      <div class="kupurow"><span class="km">tapa</span><span class="ke">edge</span></div>
-      <div class="kupurow last"><span class="km">kokonga</span><span class="ke">corner</span></div>
-    </div>
-    <div class="eq list foot">
-      <div class="seclabel">Kupu mahi — verbs</div>
-      <div class="kupurow"><span class="km">rapu<span class="tail">(a)</span></span><span class="ke">search</span></div>
-      <div class="kupurow"><span class="km">huri<span class="tail">(hia)</span> <span class="star">★</span></span><span class="ke">turn it</span></div>
-      <div class="kupurow"><span class="km">hurirapa<span class="tail">(tia)</span> <span class="star">★</span></span><span class="ke">turn over/up</span></div>
-      <div class="kupurow"><span class="km">nekeneke<span class="tail">(hia)</span></span><span class="ke">wiggle / jiggle</span></div>
-      <div class="kupurow last"><span class="km">whakanō<span class="tail">(hia)</span> <span class="star">★</span></span><span class="ke">place it</span></div>
-    </div>
-  </div>
+<div class="card"><div class="chead"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#BA7517" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1"/></svg></div><div class="t"><b>Papa honohono</b><span>Puzzles</span></div></div>
+<div class="cdiv"></div><div class="eq list"><div class="seclabel">Kupu — nouns</div><div class="kupurow"><span class="km"><b>papa honohono</b> <span class="star">★</span></span><span class="ke">puzzle</span></div><div class="kupurow"><span class="km"><b>piriri</b> <span class="star">★</span></span><span class="ke">piece</span></div><div class="kupurow"><span class="km"><b>āhua</b> <span class="star">★</span></span><span class="ke">shape</span></div><div class="kupurow"><span class="km"><b>tapa</b></span><span class="ke">edge</span></div><div class="kupurow last"><span class="km"><b>kokonga</b></span><span class="ke">corner</span></div></div><div class="eq list foot"><div class="seclabel">Kupu mahi — verbs</div><div class="kupurow"><span class="km"><b>rapu</b><span class="tail">(a)</span></span><span class="ke">search</span></div><div class="kupurow"><span class="km"><b>huri</b><span class="tail">(hia)</span> <span class="star">★</span></span><span class="ke">turn it</span></div><div class="kupurow"><span class="km"><b>hurirapa</b><span class="tail">(tia)</span> <span class="star">★</span></span><span class="ke">turn over/up</span></div><div class="kupurow"><span class="km"><b>nekeneke</b><span class="tail">(hia)</span></span><span class="ke">wiggle / jiggle</span></div><div class="kupurow last"><span class="km"><b>whakanō</b><span class="tail">(hia)</span> <span class="star">★</span></span><span class="ke">place it</span></div></div></div>
 </div><div class="panel right">
-  <div class="card">
-    <div class="chead"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#BA7517" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1"/></svg></div><div class="t"><b>Papa honohono</b><span>Puzzles</span></div></div>
-    <div class="cdiv"></div>
-    <div class="eq">
-      <div class="seclabel">Kīanga — phrases</div>
-      <div class="phrase"><div class="pm">Rapua ngā kokonga.</div><div class="pe">Find the corners.</div></div>
-      <div class="phrase"><div class="pm">Kua kitea!</div><div class="pe">Found it!</div></div>
-      <div class="phrase"><div class="pm">Paku hurihia anō.</div><div class="pe">Turn it just a little more.</div></div>
-      <div class="phrase"><div class="pm">Karawhiua!</div><div class="pe">Give it a go!</div></div>
-      <div class="phrase"><div class="pm">Koia kei a koe! <span class="star">★</span></div><div class="pe">You got it!</div></div>
-    </div>
-    <div class="footer"><span class="star">★</span> Ki te Hoe: Indigenising Practice (Williams &amp; Te Rongopatahi, 2023, Ako Aotearoa)</div>
-  </div>
+<div class="card"><div class="chead"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#BA7517" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1"/></svg></div><div class="t"><b>Papa honohono</b><span>Puzzles</span></div></div>
+<div class="cdiv"></div><div class="eq"><div class="seclabel">Kīanga — phrases</div><div class="phrase"><div class="pm">Rapua ngā kokonga.</div><div class="pe">Find the corners.</div></div><div class="phrase"><div class="pm">Kua kitea!</div><div class="pe">Found it!</div></div><div class="phrase"><div class="pm">Paku hurihia anō.</div><div class="pe">Turn it just a little more.</div></div><div class="phrase"><div class="pm">Karawhiua!</div><div class="pe">Give it a go!</div></div><div class="phrase"><div class="pm">Koia kei a koe! <span class="star">★</span></div><div class="pe">You got it!</div></div></div><div class="footer"><span class="star">★</span> Ki te Hoe: Indigenising Practice (Williams &amp; Te Rongopatahi, 2023, Ako Aotearoa)</div></div>
 </div></div>
-
 </body></html>
