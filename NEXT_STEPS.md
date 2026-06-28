@@ -57,3 +57,11 @@ content.json  --(node composer)-->  <card>.html  --(WeasyPrint)-->  PDF
    `DESIGN.md` for the design system.
 5. **New cards** — add `src/cards/<slug>/{content.json, <slug>.js}` reusing
    cardKit; add an icon path to `ICONS` in `cardKit.js` if needed.
+6. **Component-library page** — a living "storybook" HTML page that loads the
+   shared `src/lib/card.css` and renders each component once (header, cover, eq
+   box, slot equation, tiles, chips, build-a-phrase brace, kupu rows, phrases,
+   section label, key kupu, velcro guide, celebration, footer), each labelled
+   with its class name + a short note. Because it uses the real `card.css` it
+   stays in sync; review it as cards evolve to keep components common and stop
+   them drifting. Complements `DESIGN.md` (which keeps the rules/rationale
+   prose) and could eventually absorb its Components list.
